@@ -2,6 +2,9 @@ TemporaryEnv
 ============
 
 [![Build Status](https://travis-ci.org/lpil/temporary-env.svg?branch=master)](https://travis-ci.org/lpil/temporary-env)
+[![Hex downloads](https://img.shields.io/hexpm/dt/temporary-env.svg "Hex downloads")](https://hex.pm/packages/temporary-env)
+[![Hex version](https://img.shields.io/hexpm/v/temporary-env.svg "Hex version")](https://hex.pm/packages/temporary-env)
+
 
 Temporarily set an Application environment value within a block, for when you
 need to test behaviour that depends on Application environment values.

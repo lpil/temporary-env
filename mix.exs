@@ -1,7 +1,7 @@
 defmodule TemporaryEnv.Mixfile do
   use Mix.Project
 
-  @version "0.0.1"
+  @version "1.0.0"
 
   def project do
     [
@@ -24,6 +24,11 @@ defmodule TemporaryEnv.Mixfile do
       {:mix_test_watch, only: :dev},
       # Style linter
       {:dogma, only: :dev},
+
+      # Markdown processor
+      {:earmark, only: :dev},
+      # Documentation generator
+      {:ex_doc, only: :dev},
     ]
   end
 end
