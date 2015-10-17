@@ -30,7 +30,7 @@ defmodule TemporaryEnv do
   Temporarily set an Application environment value within a block.
 
       TemporaryEnv.set :my_app, greeting: "Hello!" do
-        # :greeting for :my_app is now "Hello"
+        # :greeting for :my_app is now "Hello!"
       end
       # :greeting for :my_app is back to its original value
 
