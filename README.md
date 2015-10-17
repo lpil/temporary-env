@@ -1,12 +1,14 @@
 TemporaryEnv
 ============
 
+[![Build Status](https://travis-ci.org/lpil/temporary-env.svg?branch=master)](https://travis-ci.org/lpil/temporary-env)
+
 Temporarily set an Application environment value within a block, for when you
 need to test behaviour that depends on Application environment values.
 
 ```elixir
 TemporaryEnv.set :my_app, greeting: "Hello!" do
-  # :greeting for :my_app is now "Hello"
+  # :greeting for :my_app is now "Hello!"
 end
 # :greeting for :my_app is back to its original value
 ```
@@ -21,7 +23,7 @@ Add it as a mix dependancy.
 # mix.exs
 def deps do
   [
-    {:temporary_env, only: :test},
+    {:temporary_env, github: "lpil/temporary-env", only: :test},
   ]
 end
 ```
