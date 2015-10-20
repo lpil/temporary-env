@@ -14,6 +14,11 @@ TemporaryEnv.set :my_app, greeting: "Hello!" do
   # :greeting for :my_app is now "Hello!"
 end
 # :greeting for :my_app is back to its original value
+
+TemporaryEnv.delete :my_app, :greeting do
+  # :greeting for :my_app now has no value
+end
+# :greeting for :my_app is back to its original value
 ```
 
 This *does* modify global state, so do not use it in an async situation.

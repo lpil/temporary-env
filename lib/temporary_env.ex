@@ -62,4 +62,38 @@ defmodule TemporaryEnv do
       end
     end
   end
+
+
+  @spec set(atom, atom, [{:do, any}]) :: any
+  @doc """
+  Temporarily unset an Application environment value within a block.
+
+      TemporaryEnv.delete :my_app, :greeting do
+        # :greeting for :my_app now has no value
+      end
+      # :greeting for :my_app is back to its original value
+
+  This *does* modify global state, so do not use it in an async situation.
+  """
+  defmacro delete(app, key, do: block) when key |> is_atom do
+    quote do
+      # Get original state
+      unquote(app)
+      |> Application.get_env( unquote(key), unquote(@default) )
+      |> case do
+        # when the value was previously unset
+        unquote(@default) ->
+          unquote(block)
+
+        # when the value was previously set
+        val ->
+          try do
+            Application.delete_env unquote(app), unquote(key)
+            unquote(block)
+          after
+            Application.put_env unquote(app), unquote(key), val
+          end
+      end
+    end
+  end
 end
