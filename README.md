@@ -10,7 +10,7 @@ Temporarily set an Application environment value within a block, for when you
 need to test behaviour that depends on Application environment values.
 
 ```elixir
-TemporaryEnv.set :my_app, greeting: "Hello!" do
+TemporaryEnv.put :my_app, :greeting, "Hello!" do
   # :greeting for :my_app is now "Hello!"
 end
 # :greeting for :my_app is back to its original value
@@ -30,9 +30,7 @@ Add it as a mix dependancy.
 ```elixir
 # mix.exs
 def deps do
-  [
-    {:temporary_env, only: :test},
-  ]
+  [{:temporary_env, "~> 2.0", only: :test, runtime: false}]
 end
 ```
 
@@ -51,7 +49,7 @@ defmodule SomeExampleTest do
   use TemporaryEnv
 
   test "TemporaryEnv works" do
-    TemporaryEnv.set :my_app, greeting: "Hello, world!" do
+    TemporaryEnv.put :my_app, :greeting, "Hello, world!" do
       value = Application.get_env :my_app, :greeting
       assert value == "Hello, world!"
     end
@@ -66,7 +64,7 @@ end
 
 ```
 TemporaryEnv
-Copyright © 2015 Louis Pilfold - MIT Licence
+Copyright © 2015 - present Louis Pilfold - MIT Licence
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the "Software"),
