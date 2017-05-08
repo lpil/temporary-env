@@ -4,7 +4,13 @@ defmodule TemporaryEnv do
 
   Quite handy for testing, but remember to set `async: false` for tests suites
   it is used in.
+
   """
+
+  defmodule RemovedAPI do
+    defexception [:message]
+  end
+
 
   @default :temporary_env_default_value_for_unset_var
 
@@ -25,18 +31,19 @@ defmodule TemporaryEnv do
     end
   end
 
-  @spec set(atom, [{atom, any}], [{:do, any}]) :: any
+  @spec put(atom, atom, any, [{:do, any}]) :: any
   @doc """
   Temporarily set an Application environment value within a block.
 
-      TemporaryEnv.set :my_app, greeting: "Hello!" do
+      TemporaryEnv.put :my_app, :greeting, "Hello!" do
         # :greeting for :my_app is now "Hello!"
       end
       # :greeting for :my_app is back to its original value
 
   This *does* modify global state, so do not use it in an async situation.
+
   """
-  defmacro set(app, [{key, value}], do: block) do
+  defmacro put(app, key, value, do: block) do
     quote do
       # Get original state
       temporary_env_original_value = Application.get_env(
@@ -63,6 +70,32 @@ defmodule TemporaryEnv do
     end
   end
 
+  @doc false
+  defmacro set(app, [{key, value}], do: _block) do
+    quote do
+      raise TemporaryEnv.RemovedAPI, """
+
+
+      The function TemporaryEnv.set/3 has been removed in favour of
+      TemporaryEnv.put/4. Please update your code like so:
+
+          TemporaryEnv.set :#{unquote(app)}, #{unquote(key)}: #{unquote(inspect(value))} do
+            # body...
+          end
+
+      becomes...
+
+          TemporaryEnv.put :#{unquote(app)}, :#{unquote(key)}, #{unquote(inspect(value))} do
+            # body...
+          end
+
+      Note the key and value to be set are not a keyword pair, but
+      instead two arguments, one after the other. This is to match
+      `Application.put_env/4` and `System.put_env/2`.
+
+      """
+    end
+  end
 
   @spec set(atom, atom, [{:do, any}]) :: any
   @doc """
@@ -74,6 +107,7 @@ defmodule TemporaryEnv do
       # :greeting for :my_app is back to its original value
 
   This *does* modify global state, so do not use it in an async situation.
+
   """
   defmacro delete(app, key, do: block) when key |> is_atom do
     quote do
